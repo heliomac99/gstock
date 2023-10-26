@@ -3,7 +3,7 @@
     <h3 class="secondaryColor" style="margin-bottom:40px">Lista Saídas</h3>
     <button class="btn btn-primary primaryColorBtn" @click="inserir" style="margin-bottom:20px">Inserir Saída <font-awesome-icon icon="fa-solid fa-plus"/></button>
     <div style="width:75vw">
-        <DataTable ref="dataTable" :colLabels="colLabels" :paramsUrl="{depositoId: $route.params.codigoDeposito}" :dataFields="dataFields" :dataUrl="'saida'" :showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" :id="'id'" ></DataTable>
+        <DataTable ref="dataTable" :colLabels="colLabels" :dataFields="dataFields" :dataUrl="'saida'" :showEditButton="true" :showRemoveButton="true" @editar="editar" @excluir="excluir" :id="'id'" ></DataTable>
     </div>
 
     <ModalPergunta ref="modalPergunta"></ModalPergunta>
@@ -23,12 +23,13 @@ import axios from 'axios'
         components: { DataTable, ModalPergunta, ToastComponent },
         data() {
             return {
-                colLabels: ['Data', 'Depósito', 'Material', 'Quantidade'],
+                colLabels: ['Data', 'Depósito', 'Material', 'Quantidade', 'Unidade'],
                 dataFields: [
                   {"field": 'data', "type": 'date'},
                   {"field": 'nomeDeposito', "type": 'text'},
                   {"field": 'nomeMaterial', "type": 'text'},
-                  {"field": 'quantidade', "type": 'number'}
+                  {"field": 'quantidade', "type": 'number'},
+                  {"field": 'nomeUnidade', "type": 'text'}
                 ],
             }
         },
