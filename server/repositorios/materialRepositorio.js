@@ -9,11 +9,11 @@ class MaterialRepositorio{
     constructor(){
 
     }
-    index(depositoId){
-        var sql = "select M.id as id, M.nome as nome, M.preco as preco, U.nome as nomeUnidade from Material as M right join Unidade as U on M.unidadeId = U.id where depositoId = ?"
+    index(){
+        var sql = "select M.id as id, M.nome as nome, M.preco as preco, U.nome as nomeUnidade from Material as M right join Unidade as U on M.unidadeId = U.id"
 
         return new Promise((resolve, reject) => {
-            db.all(sql, [depositoId], (err, rows) => {
+            db.all(sql, [], (err, rows) => {
                 if (err) {
                     reject(err)
                 }
@@ -22,10 +22,10 @@ class MaterialRepositorio{
         })
     }
     add(material){
-        let sql = `INSERT INTO Material (nome, unidadeId, preco, depositoId) VALUES (?,?,?,?)`
+        let sql = `INSERT INTO Material (nome, unidadeId, preco) VALUES (?,?,?)`
      
         return new Promise((resolve, reject) => {
-            db.run(sql, [material.nome, material.unidadeId, material.preco, material.depositoId], function (err, result){ 
+            db.run(sql, [material.nome, material.unidadeId, material.preco], function (err, result){ 
                 if(err)
                     reject(err)
                 resolve("")
@@ -37,7 +37,7 @@ class MaterialRepositorio{
         
         await entradaRepositorio.deleteTodasEntradasDoMaterial(id)
         await saidaRepositorio.deleteTodasSaidasDoMaterial(id)
-        
+
         return new Promise((resolve, reject) => {
             db.run(sql, [id], function (err, result){ 
                 if(err)
@@ -47,10 +47,10 @@ class MaterialRepositorio{
         })   
     }
     update(material){
-        let sql = `UPDATE Material SET nome = ?, unidadeId = ?, preco = ?, depositoId = ? where id = ?`
+        let sql = `UPDATE Material SET nome = ?, unidadeId = ?, preco = ? where id = ?`
      
         return new Promise((resolve, reject) => {
-            db.run(sql, [material.nome, material.unidadeId, material.preco, material.depositoId, material.id], function (err, result){ 
+            db.run(sql, [material.nome, material.unidadeId, material.preco, material.id], function (err, result){ 
                 if(err)
                     reject(err)
                 resolve("")
@@ -96,6 +96,17 @@ class MaterialRepositorio{
                 }             
             })
         }) 
+    }
+    carregarUnidadeMaterial(id){
+        let sql = "select U.nome as unidade from Material as M right join Unidade as U on M.unidadeId = U.id where M.id = ?"
+
+        return new Promise((resolve, reject) => {
+            db.all(sql, [id], function (err, rows){ 
+                if(err)
+                    reject(err)
+                resolve(rows[0])
+            })  
+        })
     }
     carregarUnidadeMaterial(id){
         let sql = "select U.nome as unidade from Material as M right join Unidade as U on M.unidadeId = U.id where M.id = ?"
